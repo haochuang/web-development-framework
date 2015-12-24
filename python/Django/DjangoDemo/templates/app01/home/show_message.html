@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>留言展示页面</title>
+
+<link href="__ROOT__/bbs_php/Public/css/style.css" rel="stylesheet"	type="text/css" />
+<link href="__ROOT__/bbs_php/Public/css/show_message.css" rel="stylesheet" type="text/css"/>
+
+<!--[if ie 6]>
+<link rel="stylesheet" href="css/ie6.css">
+<![endif]-->
+<link rel="stylesheet" href="__ROOT__/bbs_php/Public/css/fix.css">
+
+
+	<script type="text/javascript" src="js/jScript.js"></script>
+	<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery.pngFix.pack.js"></script>
+
+	<script type="text/javascript"> 
+    $(document).ready(function(){ 
+		//png图片透明兼容解决方案，不用可删除本断代码和jquery.pngFix.pack.js引用
+        $(document).pngFix(); 
+    }); 
+</script>
+</head>
+<script language="javascript">
+/*
+*查看回复
+*by aop
+*/
+function check_reply(message_id){
+    var xmlhttp;
+    if (window.XMLHttpRequest)
+    {
+       xmlhttp=new XMLHttpRequest();
+       }
+    else
+    {
+    	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function()
+    {
+    	if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    	{
+    		document.getElementById("info"+message_id).innerHTML=xmlhttp.responseText;
+    		}
+    	}
+    xmlhttp.open("POST","__URL__/show_detail",true);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send("message_id="+message_id);
+	//调用添加回复的代码
+    tianjia(message_id);
+}
+
+/*
+*添加回复
+*/
+function tianjia(message_id)
+{    
+    var reply_name="高俊";//TODO  需要修改  获得session值，或者从函数中获得 
+
+	var sa="<a href='__URL__/show_all_detail/?message_id="+message_id+"' target='_blank'><b>查看详细信息>></b></a><br><div><form action='__URL__/insert_reply' method='post'>姓名：aop回复标题：<input type='text' name='reply_tilte' onClick='this.focus()'>回复内容：<input type='text' name='replt_content'><input type='submit' value='提交'><input type='reset' value='重置'><input type='hidden' name='follow_id' value="+message_id+"></div>";
+	
+	document.getElementById("insert_info"+message_id).innerHTML=sa;
+}
+</script>
+
+<body>
+<div class="container">
+
+
+    
+	<div class="pagebody">
+    	<!--// 网站主体Start-->
+    	<div class="mainpage">
+
+
+
+<div id="contenter">
+	<!--show message-->
+	<volist name="list" id="vo" empty="暂时没有数据">
+		<div id="liuyan_list" onClick="check_reply({$vo.message_id})">
+            <span>[{$vo.category_title}]</span>
+            <span>[<b>{$vo.message_title}</b>]</span>
+			<span>{$vo.message_content}</span>
+			<span style="color: gray; float:right;">[{$vo.user_name}({$vo.current_dep}){$vo.message_date}]</span>
+
+			<div id="info{$vo.message_id}" style="padding-left: 20px;"></div>
+            <div id="insert_info{$vo.message_id}" style="padding-left: 20px;"></div>
+		</div>
+	</volist>
+
+
+	<div>{$page}</div>
+	<!--分页显示-->
+				
+	<br> <br> <br>
+
+	<div>
+		<b>{$user_name}</b> 您也可以添加留言
+	</div>
+
+<!--提交留言模 块  开始-->
+<div id="form_block">
+	<form action="__URL__/insert_message" method="post">
+		<div id="name">姓名：<input name="user_name" type="text" value="高俊" disabled="disabled"/></div><br>
+	     <div id="title">标题：<input name="mes_title"	type="text" size="20px"/></div><br>
+	     <div id="content">内容： <textarea name="mes_content" cols="80" rows="5"></textarea></div>
+         <br>
+         <div>
+	     <input class="btn_submit" name="" type="submit" value="提交" />
+	     <input class="btn_submit" type="reset" value="重置" />
+         </div>
+	     <input name="action" type="hidden"	value="insert" />
+	 </form> 
+</div>
+<!--提交留言模块   结束-->
+
+</div>
+<!--show message end-->		
+
+
+
+
+        </div>
+        <!--// 网站主体End-->
+    	
+    </div>
+
+
+</div>
+
+
+
+</body>
+</html>
+
+
+
+
