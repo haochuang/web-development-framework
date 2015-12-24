@@ -2,19 +2,27 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>首页</title>
+    <title>留言板首页</title>
 </head>
 <body>
-index
-{{ user  }}
 
-<form action="/auth" method="get" >
-    <input type="text" name="username" value="" />
-    <input type="password" name="password" value=""/>
-    <input type="submit" value="login" />
+<div>bbs登录主页</div>
+	<div>请按要求填写登录信息</div>
 
 
-</form>
+	<div>
+		<a href="show_message.html">{{ user  }}已经登录，将session赋值，点击进入主页</a>
+	</div>
+<br/>
+	<form action="" method="post">
+	    登录名：<input name="username" type="text"><br>
+        登陆码：<input name="password" type="text"><br>
+        验证码：<input name="check_code" type="text"><br>
+
+        <input name="" type="submit" value="提交">
+        <input name="" type="reset" value="重置">
+
+	</form>
 
 </body>
 </html>

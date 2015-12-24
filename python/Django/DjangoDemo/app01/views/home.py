@@ -1,5 +1,6 @@
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse
+import MySQLdb
 
 # Create your views here.
 
@@ -7,8 +8,21 @@ from django.http import HttpResponse
 def index(req):
     return_dir = {}
     return_dir['user'] = 'lifuhao'
+    return_dir['token'] = 'pass'
     return render_to_response('app01/home/index.html', return_dir)
 
+
+def show_message(req):
+    return_dir = {}
+    return_dir['user'] = 'lifuhao'
+    return_dir['token'] = 'pass'
+
+    db = MySQLdb.connect(user='aoplee', db='pythondemo', passwd='aoplee', host='localhost')
+    cursor = db.cursor()
+    cursor.execute('select * from message')
+    return_dir['msg'] = cursor.fetchall()
+
+    return render_to_response('app01/home/show_message.html', return_dir)
 
 
 def auth(req):
